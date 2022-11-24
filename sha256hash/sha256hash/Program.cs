@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
+using System.IO;
 using System.Security.Cryptography;
 
 namespace sha256hash
@@ -7,13 +9,14 @@ namespace sha256hash
     {
         static void Main(string[] args)
         {
-            if (args.Length <= 1)
+            if (args.Length != 1)
             {
                 Console.WriteLine("Missing [filename] parameter");
                 Console.WriteLine("Usage: sha256hash [filename]");
                 return;
             }
-            var filename = args[1];
+
+            var filename = args[0];
             
             if (!File.Exists(filename))
             {
@@ -26,7 +29,8 @@ namespace sha256hash
             using (FileStream fileStream = File.OpenRead(filename))
             {
                 byte[] hashValue = iSHA256.ComputeHash(fileStream);
-                Console.Write($"{filename}: ");
+                Console.WriteLine($"Filename: {filename}");
+                Console.Write($"SHA256: ");
                 for (int i = 0; i < hashValue.Length; i++)
                 {
                     Console.Write($"{hashValue[i]:X2}");
